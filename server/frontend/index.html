@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Google Sign In</title>
+  <link rel="stylesheet" href="css/signin.css">
+</head>
+
+<body>
+  <div class="container">
+    <h1>Google Login</h1>
+    <div id="box">
+      <!--<span class="button-text">Sign Out</span>-->
+      <img class="google-image" src="assets/signin/image 12.png">
+      <span class="signin-google">Sign in with Google</span>
+      <div class="form-container">
+        <form html="{:multipart=>true}" data-remote="true" action="https://0174cf9e8efb.ngrok.io/auth/google" method="GET" accept-charset="UTF-8">
+        <!--
+        <input id="email" class="form-control" type="text" placeholder="Email" name="email">
+        <input id="password" class="form-control" type="password" placeholder="Password" name="password">
+        !-->
+        <div id="signin-box">
+          <!--<meta name="google-signin-client_id" content="587583372799-p399k4csvmoj1rb68quslovndmulbuve.apps.googleusercontent.com">/!-->
+          <!-- <div class="g-signin2" data-onsuccess="onSignIn"></div>/!-->
+          <input class="btn btn-signin" type="submit" value="Sign In" name="commit" onclick="signIn()">
+        </div>
+          <!--<input class="btn btn-default btn-signin" type="button" value="Sign In" name="commit">/!-->
+        </form>
+      </div>
+    </div>
+  </div>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
+  <script src="js/signin.js"></script>
+</body>
+
+</html>

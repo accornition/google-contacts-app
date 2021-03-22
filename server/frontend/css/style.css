@@ -1,0 +1,11 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    background: #EFF7F9;
+    position: relative;
+}
+
+body {
+    font-family: "Roboto", sans-serif;
+}
+

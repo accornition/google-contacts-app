@@ -1,0 +1,257 @@
+/* Contacts_App_SignIn */
+
+position: relative;
+width: 1280px;
+height: 650px;
+
+background: #EFF7F9;
+
+
+/* Background */
+
+position: absolute;
+width: 1280.5px;
+height: 647px;
+left: 0px;
+top: 4px;
+
+
+
+/* Vector 1 */
+
+position: absolute;
+width: 653.5px;
+height: 606px;
+left: 0px;
+top: 4px;
+
+border: 0.4px solid #0C4AB7;
+
+
+/* Vector 2 */
+
+position: absolute;
+width: 387.1px;
+height: 491.2px;
+left: 893.4px;
+top: 159.8px;
+
+border: 0.4px solid #0C4AB7;
+
+
+/* Ellipse 51 */
+
+position: absolute;
+width: 60.5px;
+height: 34.96px;
+left: 10.5px;
+top: 537.54px;
+
+border: 0.4px solid #0C4AB7;
+
+
+/* Ellipse 52 */
+
+position: absolute;
+width: 18px;
+height: 13.39px;
+left: 112.5px;
+top: 182.5px;
+
+border: 0.4px solid #0C4AB7;
+
+
+/* Ellipse 53 */
+
+position: absolute;
+width: 18.88px;
+height: 32px;
+left: 1231.12px;
+top: 592px;
+
+border: 0.4px solid #0C4AB7;
+
+
+/* Ellipse 54 */
+
+position: absolute;
+width: 11.21px;
+height: 18px;
+left: 1132px;
+top: 502px;
+
+border: 0.4px solid #0C4AB7;
+
+
+/* Ellipse 55 */
+
+position: absolute;
+width: 26px;
+height: 24px;
+left: 1186.5px;
+top: 222.5px;
+
+border: 0.4px solid #0C4AB7;
+
+
+/* Ellipse 56 */
+
+position: absolute;
+width: 18.5px;
+height: 21.35px;
+left: 1244.5px;
+top: 125.15px;
+
+border: 0.4px solid #0C4AB7;
+
+
+/* Rectangle 157 */
+
+position: absolute;
+width: 483px;
+height: 450px;
+left: 399px;
+top: 95px;
+
+background: #FFFFFF;
+box-shadow: 0px 4px 10px rgba(5, 62, 209, 0.19);
+border-radius: 10px;
+
+
+/* image 12 */
+
+position: absolute;
+width: 30.93px;
+height: 32px;
+left: 625px;
+top: 135px;
+
+background: url(image.png);
+
+
+/* Sign in with Google */
+
+position: absolute;
+width: 223px;
+height: 30px;
+left: 529px;
+top: 179px;
+
+font-family: Poppins;
+font-style: normal;
+font-weight: 600;
+font-size: 20px;
+line-height: 30px;
+/* identical to box height */
+display: flex;
+align-items: center;
+letter-spacing: 0.08em;
+
+color: #222222;
+
+
+
+/* Rectangle 158 */
+
+position: absolute;
+width: 401px;
+height: 60px;
+left: 440px;
+top: 257px;
+
+background: #FFFFFF;
+border: 1px solid #0A45C2;
+box-sizing: border-box;
+border-radius: 4px;
+
+
+/* Rectangle 159 */
+
+position: absolute;
+width: 401px;
+height: 60px;
+left: 440px;
+top: 341px;
+
+background: #FFFFFF;
+border: 1px solid #0A45C2;
+box-sizing: border-box;
+border-radius: 4px;
+
+
+/* Rectangle 160 */
+
+position: absolute;
+width: 401px;
+height: 60px;
+left: 440px;
+top: 445px;
+
+background: #0A45C2;
+border-radius: 4px;
+
+
+/* Sign In */
+
+position: absolute;
+width: 78px;
+height: 30px;
+left: 602px;
+top: 460px;
+
+font-family: Poppins;
+font-style: normal;
+font-weight: 600;
+font-size: 20px;
+line-height: 30px;
+/* identical to box height */
+display: flex;
+align-items: center;
+letter-spacing: 0.08em;
+
+color: #FFFFFF;
+
+
+
+/* Email */
+
+position: absolute;
+width: 52px;
+height: 25px;
+left: 460px;
+top: 274px;
+
+font-family: Open Sans;
+font-style: normal;
+font-weight: normal;
+font-size: 18px;
+line-height: 25px;
+/* identical to box height */
+display: flex;
+align-items: center;
+letter-spacing: 0.08em;
+
+color: #B6B6B6;
+
+
+
+/* Password */
+
+position: absolute;
+width: 92px;
+height: 25px;
+left: 460px;
+top: 359px;
+
+font-family: Open Sans;
+font-style: normal;
+font-weight: normal;
+font-size: 18px;
+line-height: 25px;
+/* identical to box height */
+display: flex;
+align-items: center;
+letter-spacing: 0.08em;
+
+color: #B6B6B6;
+

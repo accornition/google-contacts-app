@@ -1,0 +1,126 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,700');
+@import url('https://fonts.googleapis.com/css?family=Poppins');
+
+body {
+    font-family: 'Roboto', arial, sans-serif;
+    background-image: url("../assets/signin/Background.png");
+    background-color: #EFF7F9;
+    background-repeat: repeat-x;
+}
+
+.container {
+    display: flex;
+    flex-flow: column;
+    flex-wrap: wrap;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+
+    /* https://stackoverflow.com/a/44477838 for centering flexbox itself*/
+    position: absolute;
+    right: 0;
+    left: 0;
+    top: 0;
+    bottom: 0;
+}
+
+#box {
+    display: flex;
+    flex-wrap: nowrap;
+    flex-flow: column;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+
+
+    background-image: url("../assets/signin/Rectangle\ 157.png");
+    background-color: #FFFFFF;
+    background-repeat: no-repeat;
+    
+    width: 35vw;
+    height: 50vh;
+    box-shadow: 0px 4px 10px rgba(5, 62, 209, 0.19);
+    border-radius: 10px;
+}
+
+.google-image {
+    position: absolute;
+    left: 48vw;
+    top: 35vh;
+}
+
+.signin-google {    
+    position: absolute;
+    left: 40vw;
+    top: 40vh;
+    
+    font-family: Poppins;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 30px;
+    /* identical to box height */
+    display: flex;
+    align-items: center;
+    letter-spacing: 0.08em;
+    
+    color: #222222;
+
+    /* background-image: url("../assets/signin/Sign\ in\ with\ Google.png"); */
+    /* background-repeat: no-repeat; */
+}
+
+.form-container {
+    position: absolute;
+    width: 52px;
+    height: 25px;
+    left: 40vw;
+    top: 50vh;
+    
+    font-family: 'Open Sans', sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 25px;
+    /* identical to box height */
+    display: flex;
+    align-items: center;
+    letter-spacing: 0.08em;
+    
+    color: #B6B6B6;
+}
+
+.btn-signin {
+    position: absolute;
+    width: 88px;
+    height: 30px;
+    left: 5vw;
+    top: 7vh;
+
+    
+    font-family: Poppins;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 30px;
+    /* identical to box height */
+    display: flex;
+    align-items: center;
+    letter-spacing: 0.08em;
+    
+    color: #FFFFFF;
+}
+
+/*
+#signin-box {
+    position: absolute;
+    width: 401px;
+    height: 60px;
+    left: 5vw;
+    top: 7vh;
+    
+    background: #0A45C2;
+    border-radius: 4px;
+}
+*/
