@@ -163,6 +163,36 @@ app.get(
             refresh_token: req.session.refreshToken
         });
         var contacts = [];
+        let response;
+        try {
+            // TODO: Catch it in the loop as well
+            response = await listContacts(oauth2Client, req.query.nextPageToken);
+        } catch(err) {
+            console.log(err);
+            res.status(400).json({
+                error: true
+            });
+            return;
+        }
+        let nextPage = contactsCallback(response, contacts);
+        res.status(200).json({
+            "contacts": contacts,
+            "nextPageToken": nextPage
+        });
+    }
+);
+
+app.get(
+    '/contacts/all',
+    async function(req, res) {
+        console.log(req.session.code);
+        console.log(req.session.accessToken);
+        console.log(req.session.refreshToken);
+        oauth2Client.setCredentials({
+            access_token: req.session.accessToken,
+            refresh_token: req.session.refreshToken
+        });
+        var contacts = [];
         let response = await listContacts(oauth2Client);
         let nextPage = contactsCallback(response, contacts);
 

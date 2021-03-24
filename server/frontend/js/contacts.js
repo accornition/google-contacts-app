@@ -4,7 +4,7 @@ async function fetchContacts() {
     $.ajax({
         type: "GET",
         url: server_url + "/contacts",
-        data: JSON.stringify({"code": localStorage.getItem("GOOGLE_OAUTH_CODE")}),
+        // data: JSON.stringify({"code": localStorage.getItem("GOOGLE_OAUTH_CODE")}),
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function(data) {
