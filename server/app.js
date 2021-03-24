@@ -189,6 +189,43 @@ app.get(
     }
 );
 
+
+async function getNumberofContacts(auth) {
+    const service = google.people({version: 'v1', auth});
+    const options = {
+        resourceName: 'people/me',
+        personFields: 'emailAddresses'
+    }
+    return service.people.connections.list(options);
+}
+
+app.get(
+    '/contacts/total',
+    isAuthenticated,
+    async function(req, res) {
+        oauth2Client.setCredentials({
+            access_token: req.session.accessToken,
+            refresh_token: req.session.refreshToken
+        });
+        var numContacts = 0;
+        let response;
+        try {
+            // TODO: Catch it in the loop as well
+            response = await getNumberofContacts(oauth2Client);
+            numContacts = response.data.totalItems;
+        } catch(err) {
+            console.log(err);
+            res.status(400).json({
+                error: true
+            });
+            return;
+        }
+        res.status(200).json({
+            "data": numContacts
+        });
+    }
+);
+
 const listOptions = {
     resourceName: 'people/me',
     pageSize: 10,
