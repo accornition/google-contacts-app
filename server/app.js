@@ -25,8 +25,6 @@ app.use(cookieParser());
 app.use(passport.initialize());
 
 
-let cache = [];
-
 const oauth2Client = new google.auth.OAuth2(
     process.env.OAUTH_CLIENT_ID,
     process.env.OAUTH_CLIENT_SECRET,
@@ -67,6 +65,28 @@ passport.use(
     )
 );
 
+function isAuthenticated(req, res, next) {
+    if (req.session.accessToken && req.session.refreshToken) {
+        // TODO: Add session expiry check
+        next();
+    } else {
+        res.status(403).json({
+            "message": "Unauthorized"
+        });
+        return;
+    }
+}
+
+function redirectifNotloggedIn(req, res, next) {
+    if (req.session.accessToken && req.session.refreshToken) {
+        // TODO: Add session expiry check
+        next();
+    } else {
+        res.redirect("/");
+        return;
+    }
+}
+
 app.get(
     "/auth/google",
     passport.authenticate("google", {
@@ -105,10 +125,10 @@ app.get(
                 res.cookie('googleToken', '');
             }
             req.session.code = req.query.code;
-            res.status(200).redirect("/contacts.html");
+            res.status(200).redirect("/home");
         } catch(err) {
             console.log(err.message);
-            res.status(400).redirect("/error.html");
+            res.status(400).redirect("/");
             return;
         }
     }
@@ -125,6 +145,7 @@ async function getProfileData(auth) {
 
 app.get(
     '/profile',
+    isAuthenticated,
     async function(req, res) {
         if (req.session.profileData) {
             // Use the cached data
@@ -222,6 +243,7 @@ function contactsCallback(response, contacts=[]) {
 
 app.get(
     '/contacts',
+    isAuthenticated,
     async function(req, res) {
         /*
         console.log(req.session.code);
@@ -254,6 +276,7 @@ app.get(
 
 app.get(
     '/contacts/all',
+    isAuthenticated,
     async function(req, res) {
         oauth2Client.setCredentials({
             access_token: req.session.accessToken,
@@ -282,8 +305,8 @@ app.get('/', (req, res) => {
     res.sendFile('index.html');
 });
 
-app.get('/home', (req, res) => {
-    res.sendFile("contacts.html");
+app.get('/home', redirectifNotloggedIn, (req, res) => {
+    res.sendFile(path.join(__dirname, 'frontend', "/contacts.html"));
 });
 
 app.post('/login', (req, res, next) => {
