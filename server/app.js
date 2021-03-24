@@ -112,7 +112,6 @@ app.get(
             return;
         }
     }
-    //passport.authenticate("google", {successRedirect: "/contacts.html", failureRedirect: "/error.html"}),
 );
 
 const listOptions = {
@@ -179,22 +178,10 @@ app.get(
 );
 
 app.use(express.json());
-
-//app.use(express.static(path.join(__dirname, 'frontend')));
-//app.engine('html', require('ejs').renderFile);
-//app.set('views', __dirname + '/frontend');
 app.use(express.static('frontend'))
 
-// Cache externally fetched information for future invocations
-let aud;
-
-// cache.push(fs.readFileSync('../frontend/index.html'));
 
 app.get('/', (req, res) => {
-    // res.render("index.html");
-    // res.send("Hello World!");
-    // res.setHeader('Content-Type', 'text/html');
-    // res.send( cache[0] );
     res.sendFile('index.html');
 });
 
@@ -228,20 +215,11 @@ app.get('/logout', (req, res) => {
     res.redirect('/');
 })
 
-/*
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-*/
-
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-/*
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
-*/
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
