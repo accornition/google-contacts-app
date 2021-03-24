@@ -155,9 +155,11 @@ function contactsCallback(response, contacts=[]) {
 app.get(
     '/contacts',
     async function(req, res) {
+        /*
         console.log(req.session.code);
         console.log(req.session.accessToken);
         console.log(req.session.refreshToken);
+        */
         oauth2Client.setCredentials({
             access_token: req.session.accessToken,
             refresh_token: req.session.refreshToken
@@ -185,9 +187,6 @@ app.get(
 app.get(
     '/contacts/all',
     async function(req, res) {
-        console.log(req.session.code);
-        console.log(req.session.accessToken);
-        console.log(req.session.refreshToken);
         oauth2Client.setCredentials({
             access_token: req.session.accessToken,
             refresh_token: req.session.refreshToken
