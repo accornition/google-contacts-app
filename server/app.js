@@ -115,9 +115,6 @@ app.get(
     //passport.authenticate("google", {successRedirect: "/contacts.html", failureRedirect: "/error.html"}),
 );
 
-
-// var contacts = [];
-
 const listOptions = {
     resourceName: 'people/me',
     pageSize: 10,
@@ -134,51 +131,13 @@ async function listContacts(auth, nextPageToken=null) {
     }
 }
 
-
-async function _listContacts(auth, contacts=[], nextPageToken=null) {
-    console.log("Function call");
-    const service = google.people({version: 'v1', auth});
-    if (nextPageToken) {
-        listOptions.pageToken = nextPageToken;
-    } else {
-        delete listOptions.pageToken;
-    }
-    service.people.connections.list(listOptions, (err, res) => {
-        if (err) return console.error('The API returned an error: ' + err);
-        const connections = res.data.connections;
-        nextPageToken = res.data.nextPageToken;
-        console.log(nextPageToken);
-        if (connections) {
-            // console.log(connections);
-            console.log('Connections:');
-            connections.forEach((person) => {
-                // console.log(person);
-                if (person.names && person.names.length > 0) {
-                    contacts.push(person.names[0].displayName);
-                } else {
-                    console.log('No display name found for connection.');
-                }
-            });
-        } else {
-            console.log('No connections found.');
-        }
-        if (nextPageToken) {
-            return listContacts(auth, contacts, nextPageToken);
-        } else {
-            // Last page
-            console.log("Last Page done!");
-            return contacts;
-        }
-    });
-}
-
 function contactsCallback(response, contacts=[]) {
     let nextPage = response.data.nextPageToken;
     let connections = response.data.connections;
 
     if (connections) {
+        // console.log('Connections:');
         // console.log(connections);
-        console.log('Connections:');
         connections.forEach((person) => {
             // console.log(person);
             if (person.names && person.names.length > 0) {
@@ -211,7 +170,7 @@ app.get(
         while (nextPage) {
             response = await listContacts(oauth2Client, nextPage);
             nextPage = contactsCallback(response, contacts);
-            console.log('hasNextPage?', nextPage);
+            console.log('nextPage: ', nextPage);
         }
         res.status(200).json({
             "contacts": contacts
