@@ -1,11 +1,11 @@
 async function signIn() {
-    const server_url = "https://0174cf9e8efb.ngrok.io";
+    const server_url = "http://localhost:3000";
     console.log(server_url);
     $.ajax({
         type: "GET",
         url: server_url + "/auth/google",
         headers: {
-            "Access-Control-Allow-Origin": "https://0174cf9e8efb.ngrok.io"
+            "Access-Control-Allow-Origin": "http://localhost:3000"
         },
         data: JSON.stringify({"type": "javascript"}),
         contentType: "application/json; charset=utf-8",

@@ -1,5 +1,5 @@
 async function fetchContacts() {
-    const server_url = "https://0174cf9e8efb.ngrok.io"
+    const server_url = "http://localhost:3000"
     console.log(server_url);
     $.ajax({
         type: "GET",

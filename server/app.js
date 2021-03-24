@@ -57,7 +57,11 @@ passport.use(
         console.log("refresh token: ", refreshToken);
         console.log("Profile: ", profile);
         var userProfile = profile;
-        return done(null, userProfile);
+        return done(null, {
+            profile: profile,
+            accessToken: accessToken,
+            refreshToken: refreshToken
+        });
         // return done(null, ""); // Supply the user authenticated to Passport
       }
     )
@@ -67,20 +71,25 @@ app.get(
     "/auth/google",
     passport.authenticate("google", {
       scope: ["profile", "email", CONTACT_SCOPES],
-      state: base64url(JSON.stringify({hashSecret: process.env.HASH_SECRET}))
+      state: base64url(JSON.stringify({hashSecret: process.env.HASH_SECRET})),
+      accessType: 'offline',
+      approvalPrompt: 'force',
     }, {failureRedirect: "/error.html"}),
   );
   
 app.get(
     '/auth/google/callback',
-    // passport.authenticate('google', {failureRedirect: '/error.html'}),
+    passport.authenticate('google', {failureRedirect: '/error.html'}),
     (req, res) => {
         try {
+            console.log(`Access Token is ${req.user.accessToken} and refreshToken is ${req.user.refreshToken}`);
+            req.session.accessToken = req.user.accessToken;
+            req.session.refreshToken = req.user.refreshToken;
             console.log(`Token is ${req.session.token}`);
             if (req.session.token) {
-                res.cookie('token', req.session.token);
+                res.cookie('googleToken', req.session.token);
             } else {
-                res.cookie('token', '');
+                res.cookie('googleToken', '');
             }
             queryParams = req.query;
             console.log(queryParams);
@@ -97,7 +106,8 @@ app.get(
             } else {
                 res.status(400).redirect("/error.html");
             }
-        } catch {
+        } catch(err) {
+            console.log(err.message);
             res.status(400).redirect("/error.html");
             return;
         }
@@ -105,8 +115,11 @@ app.get(
     //passport.authenticate("google", {successRedirect: "/contacts.html", failureRedirect: "/error.html"}),
 );
 
-function listConnectionNames(auth) {
-    var contacts = [];
+
+var contacts = [];
+
+async function listContacts(auth, nextPageToken=null) {
+    console.log("Function call");
     const service = google.people({version: 'v1', auth});
     service.people.connections.list({
         resourceName: 'people/me',
@@ -115,52 +128,52 @@ function listConnectionNames(auth) {
     }, (err, res) => {
         if (err) return console.error('The API returned an error: ' + err);
         const connections = res.data.connections;
+        nextPageToken = res.data.nextPageToken;
         if (connections) {
-        console.log(connections);
-        console.log('Connections:');
-        connections.forEach((person) => {
-            console.log(person);
-            if (person.names && person.names.length > 0) {
-                contacts.push(person.names[0].displayName);
-            } else {
-                console.log('No display name found for connection.');
-            }
-        });
+            console.log(connections);
+            console.log('Connections:');
+            connections.forEach((person) => {
+                // console.log(person);
+                if (person.names && person.names.length > 0) {
+                    contacts.push(person.names[0].displayName);
+                } else {
+                    console.log('No display name found for connection.');
+                }
+            });
         } else {
             console.log('No connections found.');
         }
-        console.log(contacts);
-        // return contacts;
+        /*
+        if (nextPageToken) {
+            listContacts(auth, nextPageToken);
+        } else {
+            // Last page
+            console.log("Last Page done!");
+        }
+        */
     });
-    console.log(contacts);
-    return contacts;
 }
 
 app.get(
     '/contacts',
     (req, res) => {
-        var contacts = null;
         console.log(req.session.code);
-        oauth2Client.getToken(req.session.code, (err, token) => {
-            if (err) return console.error('Error retrieving access token', err);
-            oauth2Client.setCredentials(token);
-            // Store the token to disk for later program executions
-            fs.writeFile(TOKEN_PATH, JSON.stringify(token), (err) => {
-              if (err) return console.error(err);
-              console.log(token);
-              req.session.token = token;
-              // console.log('Token stored to', TOKEN_PATH);
-            });
-            contacts = listConnectionNames(oauth2Client);
-            console.log(contacts);
+        console.log(req.session.accessToken);
+        console.log(req.session.refreshToken);
+        oauth2Client.setCredentials({
+            access_token: req.session.accessToken,
+            refresh_token: req.session.refreshToken
         });
         /*
         console.log(req.session.token);
         oauth2Client.setCredentials(req.session.token);
-        listConnectionNames(oauth2Client);
+        listContacts(oauth2Client);
         */
-        res.status(200).json({
-            "contacts": contacts
+        listContacts(oauth2Client, null).then(() => {
+            res.status(200).json({
+                "contacts": contacts
+            });
+            contacts = [];
         });
     }
 );
