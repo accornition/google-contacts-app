@@ -1,23 +1,48 @@
+/*
+$(document)(() => {
+    fetchProfileDetails();
+    fetchContacts();
+});
+*/
+
+window.onload = () => {
+    fetchProfileDetails();
+    fetchContacts();
+};
+
+async function fetchProfileDetails() {
+    const server_url = "http://localhost:3000"
+    console.log(server_url);
+    $.ajax({
+        type: "GET",
+        url: server_url + "/profile",
+        success: function(data) {
+            console.log('success!');
+            console.log(data);
+            // window.location = "http://" + server_url + "/" + "home";
+        },
+        error: function() {
+            alert('Error occured');
+        }
+    });
+}
+
 async function fetchContacts() {
     const server_url = "http://localhost:3000"
     console.log(server_url);
     $.ajax({
         type: "GET",
         url: server_url + "/contacts",
-        // data: JSON.stringify({"code": localStorage.getItem("GOOGLE_OAUTH_CODE")}),
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
+        data: {
+            "nextPageToken": localStorage.getItem("nextPageToken")
+        },
         success: function(data) {
             console.log('success!');
             console.log(data);
-            // document.cookie = 'authorization=' + data.token + ';' 
-            // window.location = "http://" + server_url + "/" + "home";
-            // return data;
+            localStorage.setItem("nextPageToken", data.nextPageToken);
         },
         error: function() {
             alert('Error occured');
         }
     });
-    // console.log("Signed In!!!!");
-    // window.location.href = "contacts.html";
 }
