@@ -116,21 +116,40 @@ app.get(
 );
 
 
-var contacts = [];
+// var contacts = [];
+
+const listOptions = {
+    resourceName: 'people/me',
+    pageSize: 10,
+    personFields: 'names,emailAddresses'
+}
 
 async function listContacts(auth, nextPageToken=null) {
+    const service = google.people({version: 'v1', auth});
+    if (!nextPageToken) {
+        return service.people.connections.list(listOptions);
+    } else {
+        listOptions.pageToken = nextPageToken
+        return service.people.connections.list(listOptions, nextPageToken);
+    }
+}
+
+
+async function _listContacts(auth, contacts=[], nextPageToken=null) {
     console.log("Function call");
     const service = google.people({version: 'v1', auth});
-    service.people.connections.list({
-        resourceName: 'people/me',
-        pageSize: 10,
-        personFields: 'names,emailAddresses',
-    }, (err, res) => {
+    if (nextPageToken) {
+        listOptions.pageToken = nextPageToken;
+    } else {
+        delete listOptions.pageToken;
+    }
+    service.people.connections.list(listOptions, (err, res) => {
         if (err) return console.error('The API returned an error: ' + err);
         const connections = res.data.connections;
         nextPageToken = res.data.nextPageToken;
+        console.log(nextPageToken);
         if (connections) {
-            console.log(connections);
+            // console.log(connections);
             console.log('Connections:');
             connections.forEach((person) => {
                 // console.log(person);
@@ -143,20 +162,41 @@ async function listContacts(auth, nextPageToken=null) {
         } else {
             console.log('No connections found.');
         }
-        /*
         if (nextPageToken) {
-            listContacts(auth, nextPageToken);
+            return listContacts(auth, contacts, nextPageToken);
         } else {
             // Last page
             console.log("Last Page done!");
+            return contacts;
         }
-        */
     });
+}
+
+function contactsCallback(response, contacts=[]) {
+    let nextPage = response.data.nextPageToken;
+    let connections = response.data.connections;
+
+    if (connections) {
+        // console.log(connections);
+        console.log('Connections:');
+        connections.forEach((person) => {
+            // console.log(person);
+            if (person.names && person.names.length > 0) {
+                contacts.push(person.names[0].displayName);
+            } else {
+                console.log('No display name found for connection.');
+            }
+        });
+    } else {
+        console.log('No connections found.');
+    }
+
+    return nextPage;
 }
 
 app.get(
     '/contacts',
-    (req, res) => {
+    async function(req, res) {
         console.log(req.session.code);
         console.log(req.session.accessToken);
         console.log(req.session.refreshToken);
@@ -164,16 +204,17 @@ app.get(
             access_token: req.session.accessToken,
             refresh_token: req.session.refreshToken
         });
-        /*
-        console.log(req.session.token);
-        oauth2Client.setCredentials(req.session.token);
-        listContacts(oauth2Client);
-        */
-        listContacts(oauth2Client, null).then(() => {
-            res.status(200).json({
-                "contacts": contacts
-            });
-            contacts = [];
+        var contacts = [];
+        let response = await listContacts(oauth2Client);
+        let nextPage = contactsCallback(response, contacts);
+
+        while (nextPage) {
+            response = await listContacts(oauth2Client, nextPage);
+            nextPage = contactsCallback(response, contacts);
+            console.log('hasNextPage?', nextPage);
+        }
+        res.status(200).json({
+            "contacts": contacts
         });
     }
 );
