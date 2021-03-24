@@ -176,7 +176,7 @@ app.get(
         }
         let nextPage = contactsCallback(response, contacts);
         res.status(200).json({
-            "contacts": contacts,
+            "data": contacts,
             "nextPageToken": nextPage
         });
     }
@@ -202,7 +202,7 @@ app.get(
             console.log('nextPage: ', nextPage);
         }
         res.status(200).json({
-            "contacts": contacts
+            "data": contacts
         });
     }
 );
