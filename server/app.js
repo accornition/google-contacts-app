@@ -70,7 +70,7 @@ passport.use(
 app.get(
     "/auth/google",
     passport.authenticate("google", {
-      scope: ["profile", "email", CONTACT_SCOPES],
+      scope: ["profile", "email", ...CONTACT_SCOPES],
       state: base64url(JSON.stringify({hashSecret: process.env.HASH_SECRET})),
       accessType: 'offline',
       approvalPrompt: 'force',
@@ -82,6 +82,19 @@ app.get(
     passport.authenticate('google', {failureRedirect: '/error.html'}),
     (req, res) => {
         try {
+            console.log(req.query);
+            
+            state = req.query.state;
+            stateJson = JSON.parse(base64url.decode(state));
+            console.log(stateJson);
+            
+            hashSecret = stateJson.hashSecret;
+            if (hashSecret !== process.env.HASH_SECRET) {
+                // TODO: Change this
+                res.status(400).redirect("/error.html");
+                return;
+            }
+
             console.log(`Access Token is ${req.user.accessToken} and refreshToken is ${req.user.refreshToken}`);
             req.session.accessToken = req.user.accessToken;
             req.session.refreshToken = req.user.refreshToken;
@@ -91,21 +104,8 @@ app.get(
             } else {
                 res.cookie('googleToken', '');
             }
-            queryParams = req.query;
-            console.log(queryParams);
-            state = queryParams.state;
-            req.session.code = queryParams.code;
-            stateJson = JSON.parse(base64url.decode(state));
-            console.log(stateJson);
-            hashSecret = stateJson.hashSecret;
-            if (hashSecret === process.env.HASH_SECRET) {
-                // TODO: Change this
-                var code = queryParams.code;
-                cache[0] = code;
-                res.status(200).redirect("/contacts.html");
-            } else {
-                res.status(400).redirect("/error.html");
-            }
+            req.session.code = req.query.code;
+            res.status(200).redirect("/contacts.html");
         } catch(err) {
             console.log(err.message);
             res.status(400).redirect("/error.html");
@@ -114,10 +114,64 @@ app.get(
     }
 );
 
+async function getProfileData(auth) {
+    const service = google.people({version: 'v1', auth});
+    const options = {
+        resourceName: 'people/me',
+        personFields: 'names,emailAddresses,photos'
+    }
+    return service.people.get(options);
+}
+
+app.get(
+    '/profile',
+    async function(req, res) {
+        if (req.session.profileData) {
+            // Use the cached data
+            // While this may need the user to log out if they had updated their profile,
+            // this is a good practice to avoid overshooting the API rate limits
+            res.status(200).json({
+                "data": req.session.profileData
+            });
+            return; 
+        }
+
+        let profileData = {
+            'name': '',
+            'email': '',
+            'avatar': null
+        };
+
+        oauth2Client.setCredentials({
+            access_token: req.session.accessToken,
+            refresh_token: req.session.refreshToken
+        });
+        let response = await getProfileData(oauth2Client);
+
+        let person = response.data;
+
+        if (person.names && person.names.length > 0) {
+            profileData.name = person.names[0].displayName;
+        }
+        if (person.emailAddresses && person.emailAddresses.length > 0) {
+            profileData.email = person.emailAddresses[0].value;
+        }
+        if (person.photos && person.photos.length > 0) {
+            profileData.avatar = person.photos[0].url;
+        }
+
+        req.session.profileData = profileData;
+
+        res.status(200).json({
+            "data": profileData
+        });
+    }
+);
+
 const listOptions = {
     resourceName: 'people/me',
     pageSize: 10,
-    personFields: 'names,emailAddresses'
+    personFields: 'names,emailAddresses,phoneNumbers,photos'
 }
 
 async function listContacts(auth, nextPageToken=null) {
@@ -139,11 +193,25 @@ function contactsCallback(response, contacts=[]) {
         // console.log(connections);
         connections.forEach((person) => {
             // console.log(person);
+            let contactDetails = {
+                'name': '',
+                'email': '',
+                'phoneNumber': '',
+                'avatar': null
+            };
             if (person.names && person.names.length > 0) {
-                contacts.push(person.names[0].displayName);
-            } else {
-                console.log('No display name found for connection.');
+                contactDetails.name = person.names[0].displayName;
             }
+            if (person.emailAddresses && person.emailAddresses.length > 0) {
+                contactDetails.email = person.emailAddresses[0].value;
+            }
+            if (person.phoneNumbers && person.phoneNumbers.length > 0) {
+                contactDetails.phoneNumber = person.phoneNumbers[0].value;
+            }
+            if (person.photos && person.photos.length > 0) {
+                contactDetails.avatar = person.photos[0].url;
+            }
+            contacts.push(contactDetails);
         });
     } else {
         console.log('No connections found.');
