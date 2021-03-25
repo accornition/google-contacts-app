@@ -12,10 +12,6 @@ body {
 }
 
 .container {
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-
     /* https://stackoverflow.com/a/44477838 for centering flexbox itself*/
     position: absolute;
     right: 0;
@@ -214,6 +210,8 @@ body {
 #contacts_list {
     display: flex;
     flex-direction: column;
+    margin-left: 189px;
+    margin-right: 189px;
 }
 
 .contact-person {
@@ -226,8 +224,6 @@ body {
     text-align: center;
     justify-content: space-around;
     margin-top: 10px; /* Protip: Use absolute pixel values rather than percentages */
-    margin-left: 189px;
-    margin-right: 171px;
     display: flex;
     flex-direction: row;
 
