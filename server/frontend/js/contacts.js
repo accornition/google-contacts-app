@@ -10,6 +10,14 @@ window.onload = () => {
     fetchContacts();
 };
 
+constructContactComponents = (data) => {
+    var trHTML = '';
+    $.each(data, (i, person) => {
+        trHTML += '<tr><td>' + person.name + '</td><td>' + person.email + '</td><td>' + person.phoneNumber + '</td></tr>';
+    });
+    $('#contacts_list').append(trHTML);
+}
+
 async function fetchProfileDetails() {
     const server_url = "http://localhost:3000"
     console.log(server_url);
