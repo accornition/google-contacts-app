@@ -1,6 +1,8 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto');
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,700');
-@import url('https://fonts.googleapis.com/css?family=Poppins');
+/* @import url('https://fonts.googleapis.com/css?family=Poppins'); */
+@import url('https://fonts.googleapis.com/css?family=Poppins:400,500,700,900');
+
 
 body {
     font-family: 'Roboto', arial, sans-serif;
@@ -126,10 +128,105 @@ body {
     color: #053ED1;
 }
 
-#contacts_list {
+.contact-header {
     align-items: center;
     text-align: center;
+    justify-content: space-around;
     margin-top: 115px; /* Protip: Use absolute pixel values rather than percentages */
     margin-left: 189px;
-    margin-right: 189px;
+    margin-right: 171px;
+    display: flex;
+    flex-direction: row;
+}
+
+.contact-header-item {    
+    font-family: Poppins;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 18px;
+    /* identical to box height */
+    display: flex;
+    align-items: center;
+    letter-spacing: 0.08em;
+    
+    color: #B0C6FF;
+}
+
+#contacts_list {
+    display: flex;
+    flex-direction: column;
+}
+
+.contact-person {
+    display: flex;
+    flex-direction: row;
+}
+
+.contact-bar {
+    align-items: center;
+    text-align: center;
+    justify-content: space-around;
+    margin-top: 10px; /* Protip: Use absolute pixel values rather than percentages */
+    margin-left: 189px;
+    margin-right: 171px;
+    display: flex;
+    flex-direction: row;
+
+    width: 100%;
+    height: 60px;
+
+    background: #FFFFFF;
+    box-shadow: 0px 2px 6px rgba(5, 62, 209, 0.14);
+    border-radius: 8px;
+}
+
+.contact-avatar {
+    /*
+    background: url(.jpg);
+    border: 1px solid #FF0000;
+    box-sizing: border-box;
+    */
+}
+
+.contact-name {    
+    font-family: Poppins;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 21px;
+    /* identical to box height */
+    display: flex;
+    align-items: center;
+    letter-spacing: 0.08em;
+    
+    color: #000000;
+}
+
+.contact-email {
+    font-family: Poppins;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 18px;
+    /* identical to box height */
+    display: flex;
+    align-items: center;
+    letter-spacing: 0.08em;
+    
+    color: #000000;
+}
+
+.contact-phone {
+    font-family: Poppins;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 21px;
+    /* identical to box height */
+    display: flex;
+    align-items: center;
+    letter-spacing: 0.08em;
+    
+    color: #000000;
 }

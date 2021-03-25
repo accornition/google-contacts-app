@@ -24,28 +24,21 @@
         <div id="contacts-title">Contacts</div>
         <div id="contacts-count">()</div>
     </div>
-    <table id="contacts_list" border='1'>
-      <tr>
-          <th>Name</th>
-          <th>Email</th>
-          <th>PhoneNumber</th>
-      </tr>
-      <tr>
-        <td>Person 1</td>
-        <td>abc@mail.com</td>
-        <td>1234123412</td>
-      </tr>
-      <tr>
-        <td>Person 2</td>
-        <td>abc@mail.com</td>
-        <td>1234123412</td>
-      </tr>
-      <tr>
-        <td>Person 3</td>
-        <td>abc@mail.com</td>
-        <td>1234123412</td>
-      </tr>
-  </table>
+    <div class="contact-header">
+      <div id="header-name" class="contact-header-item">NAME</div>
+      <div id="header-email" class="contact-header-item">EMAIL</div>
+      <div id="header-phone" class="contact-header-item">PHONE NUMBER</div>
+    </div>
+    <div id="contacts_list">
+      <div id="contact-person-1" class="contact-person">
+        <div class="contact-bar" id="contact-bar-1">
+          <!-- <div id="avatar-1" class="contact-avatar"></div> /!-->
+          <div id="name-1" class="contact-name">Person1</div>
+          <div id="email-1" class="contact-email">abc@mail.com</div>
+          <div id="phone-1" class="contact-phone">986-632-6262</div>
+        </div>
+      </div>
+    </div>
   </div>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </body>
