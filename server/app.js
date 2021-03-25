@@ -25,6 +25,7 @@ app.use(cookieParser());
 app.use(passport.initialize());
 
 
+// Create the OAuth2 client to make Google API requests
 const oauth2Client = new google.auth.OAuth2(
     process.env.OAUTH_CLIENT_ID,
     process.env.OAUTH_CLIENT_SECRET,
@@ -32,12 +33,17 @@ const oauth2Client = new google.auth.OAuth2(
 );
 
 const CONTACT_SCOPES = ['https://www.googleapis.com/auth/contacts.readonly'];
-const TOKEN_PATH = "google_token.json";
 
+/**
+ * Serialize user for storing to Passport.JS
+ */
 passport.serializeUser(function(user, cb) {
     cb(null, user);
   });
-  
+
+/**
+ * Deserialize user for fetching from Passport.JS
+ */
   passport.deserializeUser(function(obj, cb) {
     cb(null, obj);
   });
@@ -47,24 +53,28 @@ passport.use(
       {
         clientID: process.env.OAUTH_CLIENT_ID,
         clientSecret: process.env.OAUTH_CLIENT_SECRET,
-        // callbackURL: "/auth/google/callback"
         callbackURL: process.env.OAUTH_CALLBACK_DOMAIN + '/auth/google/callback'
       },
       (accessToken, refreshToken, profile, done) => {
         console.log("access token: ", accessToken);
         console.log("refresh token: ", refreshToken);
         console.log("Profile: ", profile);
-        var userProfile = profile;
-        return done(null, {
+        
+        // Create the user to supply to Passport.JS using the below options
+        let userProfile = {
             profile: profile,
             accessToken: accessToken,
             refreshToken: refreshToken
-        });
-        // return done(null, ""); // Supply the user authenticated to Passport
+        };
+        return done(null, userProfile);
       }
     )
 );
 
+/**
+ * Middleware to check if a user is authenticated or not.
+ * If this check fails, the unauthenticated user is sent a 403 status code 
+ */
 function isAuthenticated(req, res, next) {
     if (req.session.accessToken && req.session.refreshToken) {
         // TODO: Add session expiry check
@@ -77,6 +87,9 @@ function isAuthenticated(req, res, next) {
     }
 }
 
+/**
+ * Middleware to redirect a user to the home page if they aren't authenticated
+ */
 function redirectifNotloggedIn(req, res, next) {
     if (req.session.accessToken && req.session.refreshToken) {
         // TODO: Add session expiry check
@@ -134,6 +147,9 @@ app.get(
     }
 );
 
+/**
+ * Fetches the authenticated user's Google Profile Data 
+ */
 async function getProfileData(auth) {
     const service = google.people({version: 'v1', auth});
     const options = {
@@ -190,6 +206,9 @@ app.get(
 );
 
 
+/**
+ * Fetches the total number of contacts 
+ */
 async function getNumberofContacts(auth) {
     const service = google.people({version: 'v1', auth});
     const options = {
@@ -226,13 +245,12 @@ app.get(
     }
 );
 
-const listOptions = {
-    resourceName: 'people/me',
-    pageSize: 10,
-    personFields: 'names,emailAddresses,phoneNumbers,photos'
-}
-
 async function listContacts(auth, nextPageToken=null) {
+    let listOptions = {
+        resourceName: 'people/me',
+        pageSize: 10,
+        personFields: 'names,emailAddresses,phoneNumbers,photos'
+    }
     const service = google.people({version: 'v1', auth});
     if (!nextPageToken) {
         return service.people.connections.list(listOptions);
@@ -247,10 +265,7 @@ function contactsCallback(response, contacts=[]) {
     let connections = response.data.connections;
 
     if (connections) {
-        // console.log('Connections:');
-        // console.log(connections);
         connections.forEach((person) => {
-            // console.log(person);
             let contactDetails = {
                 'name': '',
                 'email': '',
@@ -278,15 +293,13 @@ function contactsCallback(response, contacts=[]) {
     return nextPage;
 }
 
+/**
+ * Fetches a single page of contacts data
+ */
 app.get(
     '/contacts',
     isAuthenticated,
     async function(req, res) {
-        /*
-        console.log(req.session.code);
-        console.log(req.session.accessToken);
-        console.log(req.session.refreshToken);
-        */
         oauth2Client.setCredentials({
             access_token: req.session.accessToken,
             refresh_token: req.session.refreshToken
@@ -294,7 +307,6 @@ app.get(
         var contacts = [];
         let response;
         try {
-            // TODO: Catch it in the loop as well
             response = await listContacts(oauth2Client, req.query.nextPageToken);
         } catch(err) {
             console.log(err);
@@ -311,6 +323,10 @@ app.get(
     }
 );
 
+
+/**
+ * Fetches all contacts at once
+ */
 app.get(
     '/contacts/all',
     isAuthenticated,
