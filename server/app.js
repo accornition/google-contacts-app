@@ -76,7 +76,7 @@ passport.use(
  * If this check fails, the unauthenticated user is sent a 403 status code 
  */
 function isAuthenticated(req, res, next) {
-    if (req.session.accessToken && req.session.refreshToken) {
+    if (req.session.accessToken) {
         // TODO: Add session expiry check
         next();
     } else {
@@ -91,7 +91,7 @@ function isAuthenticated(req, res, next) {
  * Middleware to redirect a user to the home page if they aren't authenticated
  */
 function redirectifNotloggedIn(req, res, next) {
-    if (req.session.accessToken && req.session.refreshToken) {
+    if (req.session.accessToken) {
         // TODO: Add session expiry check
         next();
     } else {
@@ -131,16 +131,10 @@ app.get(
             console.log(`Access Token is ${req.user.accessToken} and refreshToken is ${req.user.refreshToken}`);
             req.session.accessToken = req.user.accessToken;
             req.session.refreshToken = req.user.refreshToken;
-            console.log(`Token is ${req.session.token}`);
-            if (req.session.token) {
-                res.cookie('googleToken', req.session.token);
-            } else {
-                res.cookie('googleToken', '');
-            }
             req.session.code = req.query.code;
             res.status(200).redirect("/home");
         } catch(err) {
-            console.log(err.message);
+            console.log(`Error: ${err.message}`);
             res.status(400).redirect("/");
             return;
         }
@@ -245,14 +239,15 @@ app.get(
     }
 );
 
-async function listContacts(auth, nextPageToken=null) {
-    let listOptions = {
-        resourceName: 'people/me',
-        pageSize: 10,
-        personFields: 'names,emailAddresses,phoneNumbers,photos'
-    }
+const listOptions = {
+    resourceName: 'people/me',
+    pageSize: 10,
+    personFields: 'names,emailAddresses,phoneNumbers,photos'
+}
+
+async function listContacts(auth, nextPageToken=undefined) {
     const service = google.people({version: 'v1', auth});
-    if (!nextPageToken) {
+    if (!nextPageToken || nextPageToken == undefined || nextPageToken === "undefined") {
         return service.people.connections.list(listOptions);
     } else {
         listOptions.pageToken = nextPageToken

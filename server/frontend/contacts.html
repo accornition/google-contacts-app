@@ -9,14 +9,41 @@
 
 <body>
   <div class="container">
-    <h1>Contacts Page</h1>
-    <table id="contacts_list" border='1'>
-      <tr>
-          <th>Name</th>
-          <th>Email</th>
-          <th>PhoneNumber</th>
-      </tr>
-  </table>
+    <div class="header-bar">
+        <span id="rectangle">
+            <!-- <div id="ellipse-50"></div> /!-->
+            <!-- <div id="ellipse-49"></div> /!-->
+        </span>
+        <div id="my-profile" class="profile">
+          <div id="my-profile-ellipse">
+            <div id="my-profile-avatar"></div>
+          </div>
+          <div id="my-profile-info">
+            <div id="my-profile-name">Alex Trust</div>
+            <div id="my-profile-email">alextrust@gmail.com</div>
+          </div>
+        </div>
+        <div class="logout">
+            <img src="assets/app/Logout.png" alt="Logout" onclick="logout()">
+        </div>
+    </div>
+    <div class="contacts-title-container">
+        <div id="contacts-title">Contacts</div>
+        <div id="contacts-count">()</div>
+    </div>
+    <div class="contact-header">
+      <div id="header-name" class="contact-header-item">NAME</div>
+      <div id="header-email" class="contact-header-item">EMAIL</div>
+      <div id="header-phone" class="contact-header-item">PHONE NUMBER</div>
+    </div>
+    <div id="contact-scroller-container">
+      <div id="contacts_list">
+      </div>
+      <div id="scroll-container">
+        <div id="scroller"></div>
+        <div id="scrollbar"></div>
+      </div>
+    </div>
   </div>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="js/contacts.js"></script>
