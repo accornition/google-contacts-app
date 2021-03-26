@@ -32,7 +32,7 @@ const oauth2Client = new google.auth.OAuth2(
     process.env.OAUTH_CALLBACK_DOMAIN + process.env.OAUTH_CALLBACK_URL,
 );
 
-const CONTACT_SCOPES = ['https://www.googleapis.com/auth/contacts.readonly'];
+const CONTACT_SCOPES = ['https://www.googleapis.com/auth/contacts.readonly', 'https://www.googleapis.com/auth/contacts'];
 
 /**
  * Serialize user for storing to Passport.JS
@@ -265,7 +265,8 @@ function contactsCallback(response, contacts=[]) {
                 'name': '',
                 'email': '',
                 'phoneNumber': '',
-                'avatar': null
+                'avatar': null,
+                'resourceName': ''
             };
             if (person.names && person.names.length > 0) {
                 contactDetails.name = person.names[0].displayName;
@@ -278,6 +279,9 @@ function contactsCallback(response, contacts=[]) {
             }
             if (person.photos && person.photos.length > 0) {
                 contactDetails.avatar = person.photos[0].url;
+            }
+            if (person.resourceName) {
+                contactDetails.resourceName = person.resourceName
             }
             contacts.push(contactDetails);
         });
@@ -344,6 +348,48 @@ app.get(
         });
     }
 );
+
+async function deleteContact(auth, resourceName) {
+    const service = google.people({version: 'v1', auth});
+    return service.people.deleteContact({
+        resourceName: resourceName
+    });
+}
+
+/**
+ * Deletes a contact
+ */
+app.delete(
+    '/contacts',
+    isAuthenticated,
+    async function(req, res) {
+        var resourceName = decodeURIComponent(req.query.resourceName);
+        if (!resourceName) {
+            res.status(400).json({
+                "error": true
+            });
+            return;
+        }
+        oauth2Client.setCredentials({
+            access_token: req.session.accessToken,
+            refresh_token: req.session.refreshToken
+        });
+        try {
+            var response = await deleteContact(oauth2Client, resourceName);
+        } catch(err) {
+            console.log(err);
+            res.status(400).json({
+                "error": "Failed to delete"
+            });
+            return;
+        }
+        res.status(200).json({
+            "data": {
+                "deleted": true
+            }
+        });
+    }
+)
 
 app.use(express.json());
 app.use(express.static('frontend'))
