@@ -31,7 +31,7 @@ async function fetchProfileDetails() {
     const server_url = "http://localhost:3000"
     $.ajax({
         type: "GET",
-        url: server_url + "/profile/test",
+        url: server_url + "/profile",
         success: function(data) {
             constructProfileData(data.data);
             // window.location = "http://" + server_url + "/" + "home";
@@ -56,7 +56,7 @@ async function fetchContacts() {
     }
     $.ajax({
         type: "GET",
-        url: server_url + "/contacts/test",
+        url: server_url + "/contacts",
         data: params,
         success: function(data) {
             localStorage.setItem("nextPageToken", data.nextPageToken);
