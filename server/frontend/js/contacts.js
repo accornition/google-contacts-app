@@ -11,6 +11,15 @@ window.onload = () => {
     fetchContacts();
 };
 
+var contactbarTopOffset = 193;
+var contactAvatarTopOffset = 203;
+var contactNameTopOffset = 212;
+var contactEmailTopOffset = 214;
+var contactPhoneTopOffset = 212;
+var contactDustbinTopOffset = 214;
+var contactSelectionBoxTopOffset = 214;
+
+/*
 $(window).on('scroll', scrollHandler);
 
 function scrollHandler(event) {
@@ -32,21 +41,30 @@ function scrollHandler(event) {
     }
     // console.log(`Scroll Position: ${scrollBottom} pixels`);
 }
+*/
 
 function constructContactComponents(data) {
     var trHTML = '';
     $.each(data, (i, person) => {
-        var avatarTag = `<img src=${person.avatar} id="avatar-1" class="contact-avatar">`;
-        // var resourceNameTag = `<img src="" id="${person.resourceName}" class="contact-resource">`
-        var binTag = `<svg id="dustbin-${person.resourceName}" class="contact-dustbin" width="19" height="20" viewBox="0 0 19 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M1 5.52332L17.54 2.00774" stroke="#053ED1" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        <path fill-rule="evenodd" clip-rule="evenodd" d="M10.5413 1.02613L6.99832 1.77901C6.68409 1.8451 6.40912 2.0336 6.23415 2.30284C6.05919 2.57209 5.99864 2.89993 6.06588 3.21391L6.31711 4.39597L12.2242 3.13983L11.973 1.95857C11.9068 1.64503 11.7188 1.37062 11.4503 1.19574C11.1818 1.02086 10.8548 0.959843 10.5413 1.02613Z" stroke="#053ED1" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M8.24646 14.8896V8.85049" stroke="#053ED1" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M11.8701 14.8896V8.85049" stroke="#053ED1" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M14.5877 5.22699H16.7014L15.5862 18.009C15.5341 18.6368 15.0083 19.1192 14.3784 19.117H5.73436C5.10627 19.1167 4.58328 18.635 4.53136 18.009L3.69635 7.94621" stroke="#053ED1" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>`;
-        trHTML += `<div id="${person.resourceName}" class="contact-person">\n<div class="contact-bar" toggle="true" id="contact-bar-${person.resourceName}">\n<div class="contact-name-avatar-container">${avatarTag}\n<div id="name-1" class="contact-name">${person.name}</div></div>\n<div id="email-1" class="contact-email">${person.email}</div>\n<div id="phone-1" class="contact-phone">${person.phoneNumber}</div>\n</div>\n${binTag}</div>`;
-        $('#contacts_list').append(trHTML);
+        trHTML += `
+        <div id="${person.resourceName}" class="contact-person">
+            <div class="contact-bar" id="contact-bar-${person.resourceName}" style="top: ${contactbarTopOffset}px" toggle="true"></div>
+            <img class="contact-avatar" src=${person.avatar} style="top: ${contactAvatarTopOffset}px">
+            <div class="contact-name" style="top: ${contactNameTopOffset}px">${person.name}</div>
+            <div class="contact-email" style="top: ${contactEmailTopOffset}px">${person.email}</div>
+            <div class="contact-phone" style="top: ${contactPhoneTopOffset}px">${person.phoneNumber}</div>
+            <img src="../assets/app/Dustbin.png" id="dustbin-${person.resourceName}" class="contact-dustbin" style="top: ${contactDustbinTopOffset}px">
+            <div class="check-box" id="checkbox-${person.resourceName}" style="top: ${contactSelectionBoxTopOffset}px"></div>
+        </div>
+        `
+        contactbarTopOffset += 70;
+        contactAvatarTopOffset += 70;
+        contactNameTopOffset += 70;
+        contactEmailTopOffset += 70;
+        contactPhoneTopOffset += 70;
+        contactDustbinTopOffset += 70;
+        contactSelectionBoxTopOffset += 70;
+        $('#contact_list').append(trHTML);
         trHTML = ''; // Reset it
         document.getElementById(`contact-bar-${person.resourceName}`).addEventListener('click', toggleContact, false);
         document.getElementById(`dustbin-${person.resourceName}`).addEventListener('click', deleteContact, false); // We set it to false since we aren't bubbling the event through a container
@@ -67,7 +85,6 @@ async function fetchProfileDetails() {
         url: server_url + "/profile",
         success: function(data) {
             constructProfileData(data.data);
-            // window.location = "http://" + server_url + "/" + "home";
         },
         error: function() {
             alert('Error occured');
@@ -82,7 +99,7 @@ async function fetchTotalContacts() {
         url: server_url + "/contacts/total",
         success: function(data) {
             var numContacts = data.data;
-            $('#contacts-count').html(`( ${numContacts} )`);
+            $('#contacts-count').html(`(${numContacts})`);
         },
         error: function() {
             alert('Error occured when fetching contacts');
@@ -112,7 +129,6 @@ async function fetchContacts() {
         },
         error: function() {
             alert('Error occured');
-            // localStorage.setItem("nextPageToken", undefined);
         }
     });
 }
@@ -151,6 +167,7 @@ async function toggleContact(event) {
 
     // Also make the delete button visible
     const dustbin = document.getElementById(`dustbin-${resourceName}`);
+    const checkbox = document.getElementById(`checkbox-${resourceName}`);
     
     var toggle = bar.getAttribute("toggle");
     
@@ -159,10 +176,12 @@ async function toggleContact(event) {
             bar.className += ' highlight-bar';
             bar.setAttribute("toggle", "false");
             dustbin.style.setProperty('visibility', 'visible');
+            checkbox.style.setProperty('visibility', 'visible');
         } else {
             bar.className = bar.className.replace(' highlight-bar', '');
             bar.setAttribute("toggle", "true");
             dustbin.style.setProperty('visibility', 'hidden');
+            checkbox.style.setProperty('visibility', 'hidden');
         }
     } else {
         console.log("No 'toggle' property for:", elementId);
@@ -186,10 +205,16 @@ async function deleteContact(event) {
         }),
         success: function(data) {
             console.log("Deleted Contact!");
-            $(`#${resourceName.replace(/\//g, "\\/")}`).remove(); // We need to escape '/' with "\\/" since our ID contains a forward slash
+            var resourceId = `${resourceName.replace(/\//g, "\\/")}`;
+            recalculateContactPositions(resourceId);
+            $(`#${resourceId}`).remove(); // We need to escape '/' with "\\/" since our ID contains a forward slash
         },
         error: function() {
             console.log("Error during Deleting Contact");
         }
     });
+}
+
+function recalculateContactPositions(resourceName) {
+    throw new Error("Not yet implemented");
 }
