@@ -82,7 +82,7 @@ async function fetchTotalContacts() {
         url: server_url + "/contacts/total",
         success: function(data) {
             var numContacts = data.data;
-            $('#contacts-count').html(`( ${numContacts} )`);
+            $('#contacts-count').html(`(${numContacts})`);
         },
         error: function() {
             alert('Error occured when fetching contacts');
