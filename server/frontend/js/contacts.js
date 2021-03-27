@@ -11,14 +11,14 @@ window.onload = () => {
     fetchContacts();
 };
 
-$(window).on('scroll', scrollHandler);
+$('#contacts_list').on('scroll', scrollHandler);
 
 function scrollHandler(event) {
     let scroll = $(window).scrollTop();
     let scrollBottom = scroll + $(window).height();
-    let difference = $(document).height() - scrollBottom;
+    let difference = $(this)[0].scrollHeight - ($(this).scrollTop() + $(this).innerHeight());
     const DELTA = 0.25; // We make another AJAX query if the scroll bar has only DELTA percent of the current window remaining to render
-    if (Math.abs((difference) / $(window).height()) <= DELTA) {
+    if(Math.abs(difference / ($(window).height())) <= DELTA) {
         // Make another API call
         var nextPageToken = localStorage.getItem("nextPageToken");
         if (nextPageToken == undefined || nextPageToken == null ||  nextPageToken === "") {

@@ -194,6 +194,10 @@ body {
     justify-content: space-around;
     display: flex;
     flex-direction: row;
+
+    margin-left: 189px;
+    margin-right: 189px;
+    margin-top: 115px;
 }
 
 .contact-header-item {    
@@ -213,13 +217,11 @@ body {
 #contacts_list {
     display: flex;
     flex-direction: column;
-    margin-left: 189px;
-    margin-right: 189px;
-    margin-top: 115px;
     
     flex: 1 1 auto;
     overflow-y: scroll;
     min-height: 100px;
+    height: 70vh;
 }
 
 .contact-person {
@@ -234,10 +236,10 @@ body {
     text-align: center;
     display: flex;
     flex-direction: row;
-    margin-left: 46px;
+    margin-left: 100px;
     justify-content: space-around;
 
-    width: 100%;
+    width: 80%;
     height: 60px;
 
     background: #FFFFFF;
