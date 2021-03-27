@@ -11,7 +11,29 @@ window.onload = () => {
     fetchContacts();
 };
 
- function constructContactComponents(data) {
+$(window).on('scroll', scrollHandler);
+
+function scrollHandler(event) {
+    let scroll = $(window).scrollTop();
+    let scrollBottom = scroll + $(window).height();
+    let difference = $(document).height() - scrollBottom;
+    const DELTA = 0.25; // We make another AJAX query if the scroll bar has only DELTA percent of the current window remaining to render
+    if (Math.abs((difference) / $(window).height()) <= DELTA) {
+        // Make another API call
+        var nextPageToken = localStorage.getItem("nextPageToken");
+        if (nextPageToken == undefined || nextPageToken == null ||  nextPageToken === "") {
+            // console.log("No more Api calls on scroll!");
+        } else {
+            console.log("Api Call on scroll");
+            fetchContacts();
+        }
+        // console.log(`Close to bottom! Difference = ${difference}`);
+    } else {
+    }
+    // console.log(`Scroll Position: ${scrollBottom} pixels`);
+}
+
+function constructContactComponents(data) {
     var trHTML = '';
     $.each(data, (i, person) => {
         var avatarTag = `<img src=${person.avatar} id="avatar-1" class="contact-avatar">`;

@@ -216,6 +216,10 @@ body {
     margin-left: 189px;
     margin-right: 189px;
     margin-top: 115px;
+    
+    flex: 1 1 auto;
+    overflow-y: scroll;
+    min-height: 100px;
 }
 
 .contact-person {
@@ -326,3 +330,13 @@ body {
     box-shadow: 0px 4px 10px rgba(5, 62, 209, 0.19);
     border-radius: 8px;
 }
+
+/*
+.scroll-container {
+    position: relative;
+    width: 6px;
+    height: 440px;
+    left: 1103px;
+    top: 203px;
+}
+*/
