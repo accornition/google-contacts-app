@@ -61,7 +61,7 @@ function constructProfileData(data) {
 }
 
 async function fetchProfileDetails() {
-    const server_url = "http://localhost:3000"
+    const server_url = localStorage.getItem("GOOGLE_CONTACTS_APP_SERVER_URL");
     $.ajax({
         type: "GET",
         url: server_url + "/profile",
@@ -76,7 +76,7 @@ async function fetchProfileDetails() {
 }
 
 async function fetchTotalContacts() {
-    const server_url = "http://localhost:3000"
+    const server_url = localStorage.getItem("GOOGLE_CONTACTS_APP_SERVER_URL");
     $.ajax({
         type: "GET",
         url: server_url + "/contacts/total",
@@ -91,7 +91,7 @@ async function fetchTotalContacts() {
 }
 
 async function fetchContacts() {
-    const server_url = "http://localhost:3000"
+    const server_url = localStorage.getItem("GOOGLE_CONTACTS_APP_SERVER_URL");
     var nextPageToken = localStorage.getItem("nextPageToken");
     if (nextPageToken == undefined || nextPageToken == null ||  nextPageToken === "") {
         nextPageToken = undefined;
@@ -118,7 +118,7 @@ async function fetchContacts() {
 }
 
 async function logout() {
-    const server_url = "http://localhost:3000"
+    const server_url = localStorage.getItem("GOOGLE_CONTACTS_APP_SERVER_URL");
     $.ajax({
         type: "GET",
         url: server_url + "/logout",
@@ -178,7 +178,7 @@ async function deleteContact(event) {
         return;
     }
     console.log(`Delete Button Clicked! - resourceName: ${resourceName}`);
-    const server_url = "http://localhost:3000"
+    const server_url = localStorage.getItem("GOOGLE_CONTACTS_APP_SERVER_URL");
     $.ajax({
         type: "DELETE",
         url: server_url + `/contacts?` + $.param({
