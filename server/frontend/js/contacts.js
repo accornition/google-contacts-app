@@ -216,5 +216,25 @@ async function deleteContact(event) {
 }
 
 function recalculateContactPositions(resourceName) {
-    throw new Error("Not yet implemented");
+    // Get the resource element and then shift all elements in the linked list above
+    const SHIFT = -70;
+    var shiftUp = (contactDiv) => {
+        const classes = [".contact-bar", ".contact-avatar", ".contact-name", ".contact-email", ".contact-phone", ".contact-dustbin", ".check-box"];
+        classes.forEach((className) => {
+            var element = contactDiv.find(className)[0];
+            var elementTop = element.style.top;
+            var newTop = (Number(elementTop.substr(0, elementTop.length - 2)) + SHIFT).toString() + "px";
+            element.style.top = newTop;
+        });
+    }
+
+    var contactDiv = $(`#${resourceName}`).next();
+    var contactBar = null;
+    var contactId = null;
+    while (contactDiv && contactDiv.length > 0) {
+        contactBar = contactDiv.find('.contact-bar')[0];
+        shiftUp(contactDiv);
+        contactDiv = contactDiv.next();
+    }
+    // throw new Error("Not yet implemented");
 }
