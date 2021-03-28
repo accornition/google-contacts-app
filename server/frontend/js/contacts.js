@@ -29,16 +29,37 @@ function incrementOffsets(shift) {
     contactSelectionBoxTopOffset += shift;
 }
 
+function throttle(func, interval) {
+    var lastCall = 0;
+    return function() {
+        var now = Date.now();
+        if (lastCall + interval < now) {
+            lastCall = now;
+            return func.apply(this, arguments);
+        }
+    };
+}
 
-$('#contact_list').on('scroll', scrollHandler);
+
+$('#contact_list').on('scroll', throttle(scrollHandler, 2000)); // Fire only once every 2 seconds
+
+var lastScrollTop = 0;
 
 function scrollHandler(event) {
+    var st = $(this).scrollTop();
+    if (st > lastScrollTop){
+        // downscroll code
+    } else {
+       // upscroll code
+       return;
+    }
+    lastScrollTop = st;
     let totalHeight = $('#contact_list')[0].scrollHeight;
     let totalOffset = $('#contact_list')[0].offsetHeight;
     let scroll = $('#contact_list').scrollTop();
     let difference = Math.abs(totalHeight - (scroll + totalOffset));
     const DELTA = 0.2; // We make another AJAX query if the scroll bar has only DELTA percent of the current window remaining to render
-    if ((difference) / scroll <= DELTA) {
+    if ((difference) / totalHeight <= DELTA) {
         // Make another API call
         var nextPageToken = localStorage.getItem("nextPageToken");
         if (nextPageToken == undefined || nextPageToken == null ||  nextPageToken === "") {
@@ -50,7 +71,6 @@ function scrollHandler(event) {
         // console.log(`Close to bottom! Difference = ${difference}`);
     } else {
     }
-    // console.log(`Scroll Position: ${scrollBottom} pixels`);
 }
 
 
