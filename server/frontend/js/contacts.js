@@ -135,7 +135,7 @@ async function fetchTotalContacts() {
 async function fetchContacts() {
     const server_url = localStorage.getItem("GOOGLE_CONTACTS_APP_SERVER_URL");
     var nextPageToken = localStorage.getItem("nextPageToken");
-    if (nextPageToken == undefined || nextPageToken == null ||  nextPageToken === "") {
+    if (nextPageToken == undefined || nextPageToken == null ||  nextPageToken === "" || nextPageToken === "undefined") {
         nextPageToken = undefined;
     }
     var params = {
