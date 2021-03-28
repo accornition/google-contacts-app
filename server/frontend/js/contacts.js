@@ -19,6 +19,16 @@ var contactPhoneTopOffset = 212;
 var contactDustbinTopOffset = 214;
 var contactSelectionBoxTopOffset = 214;
 
+function incrementOffsets(shift) {
+    contactbarTopOffset += shift;
+    contactAvatarTopOffset += shift;
+    contactNameTopOffset += shift;
+    contactEmailTopOffset += shift;
+    contactPhoneTopOffset += shift;
+    contactDustbinTopOffset += shift;
+    contactSelectionBoxTopOffset += shift;
+}
+
 
 $('#contact_list').on('scroll', scrollHandler);
 
@@ -58,13 +68,7 @@ function constructContactComponents(data) {
             <div class="check-box" id="checkbox-${person.resourceName}" style="top: ${contactSelectionBoxTopOffset}px"></div>
         </div>
         `
-        contactbarTopOffset += 70;
-        contactAvatarTopOffset += 70;
-        contactNameTopOffset += 70;
-        contactEmailTopOffset += 70;
-        contactPhoneTopOffset += 70;
-        contactDustbinTopOffset += 70;
-        contactSelectionBoxTopOffset += 70;
+        incrementOffsets(+70);
         $('#contact_list').append(trHTML);
         trHTML = ''; // Reset it
         document.getElementById(`contact-bar-${person.resourceName}`).addEventListener('click', toggleContact, false);
@@ -209,6 +213,8 @@ async function deleteContact(event) {
             var resourceId = `${resourceName.replace(/\//g, "\\/")}`;
             recalculateContactPositions(resourceId);
             $(`#${resourceId}`).remove(); // We need to escape '/' with "\\/" since our ID contains a forward slash
+            // Decrement all offsets
+            incrementOffsets(-70);
             var numContacts = $('#contacts-count').html();
             numContacts = Number(numContacts.substr(1, numContacts.length - 2)) - 1;
             if (numContacts && numContacts >= 0) {
