@@ -62,7 +62,7 @@ function scrollHandler(event) {
     if ((difference) / totalHeight <= DELTA) {
         // Make another API call
         var nextPageToken = localStorage.getItem("nextPageToken");
-        if (nextPageToken == undefined || nextPageToken == null ||  nextPageToken === "") {
+        if (nextPageToken == undefined || nextPageToken == null ||  nextPageToken === "" || nextPageToken === "undefined") {
             // console.log("No more Api calls on scroll!");
         } else {
             console.log("Api Call on scroll");
