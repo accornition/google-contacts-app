@@ -46,7 +46,7 @@ $('#contact_list').on('scroll', throttle(scrollHandler, 2000)); // Fire only onc
 var lastScrollTop = 0;
 
 function scrollHandler(event) {
-    var st = $(this).scrollTop();
+    var st = $('#contact_list').scrollTop();
     if (st > lastScrollTop){
         // downscroll code
     } else {
