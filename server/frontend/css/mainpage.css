@@ -139,18 +139,16 @@
     
 }
 
-#scrollbar {
-    
+.scrollbar {
     position: absolute;
     width: 6px;
     height: 440px;
     left: 1103px;
     top: 203px;
-
     overflow-y: scroll;
 }
 
-#rectangle_148 {
+#rectangle_148::-webkit-scrollbar-track {
     
     position: absolute;
     width: 6px;
@@ -164,7 +162,7 @@
     
 }
 
-#rectangle_149 {
+#rectangle_149::-webkit-scrollbar-thumb {
     
     position: absolute;
     width: 6px;
@@ -177,6 +175,25 @@
     
     
 }
+
+#myscrollbar::-webkit-scrollbar {
+    width: 6px;
+}
+
+#myscrollbar::-webkit-scrollbar-thumb {
+    width: 6px;
+    height: 47.8px;
+	border-radius: 4px;
+	background-color: #053ED1;
+}
+
+#myscrollbar::-webkit-scrollbar-track {
+    width: 6px;
+    height: 440px;
+    background: #F4F7FF;
+    border-radius: 4px;
+}
+
 
 #list {
     
@@ -1499,12 +1516,22 @@
 
 /* User Defined Classes */
 
+#contact_list {
+    position: absolute;
+    width: 902px;
+    height: 563px;
+    left: 189px;
+    top: 183px;
+
+    overflow-y: scroll;
+}
+
 .contact-bar {
     
     position: absolute;
     width: 902px;
     height: 60px;
-    left: 189px;
+    margin-top: -183px;
     
     background: #FFFFFF;
     box-shadow: 0px 2px 6px rgba(5, 62, 209, 0.14);
@@ -1517,7 +1544,8 @@
     position: absolute;
     width: 40px;
     height: 40px;
-    left: 235px;
+    left: 46px;
+    margin-top: -183px;
     
     border: 1px solid #FF0000;
     box-sizing: border-box;
@@ -1529,7 +1557,8 @@
     position: absolute;
     width: 127px;
     height: 21px;
-    left: 285px;
+    left: 96px;
+    margin-top: -183px;
     
     font-family: Poppins;
     font-style: normal;
@@ -1548,7 +1577,8 @@
     position: absolute;
     width: 175px;
     height: 18px;
-    left: 535px;
+    left: 346px;
+    margin-top: -183px;
     
     font-family: Poppins;
     font-style: normal;
@@ -1566,7 +1596,8 @@
     position: absolute;
     width: 115px;
     height: 21px;
-    left: 856px;
+    left: 667px;
+    margin-top: -183px;
     
     font-family: Poppins;
     font-style: normal;
@@ -1583,8 +1614,9 @@
 
 .contact-dustbin {
     position: absolute;
-    left: 81.56%;
+    left: 91.56%;
     right: 17.15%;
+    margin-top: -183px;
 
     visibility: hidden;
 }
@@ -1602,9 +1634,34 @@
     right: 82.81%;
     width: 15.91px;
     height: 14.21px;
+    margin-top: -183px;
 
     visibility: hidden;
 
     border: 1.4px solid #053ED1;
     border-radius: 4px;
+}
+
+.scroll {
+    width: 6px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+.scroll::-webkit-scrollbar-track{
+    width: 6px;
+    height: 440px;
+    background: #F4F7FF;
+    border-radius: 4px;
+}
+
+.scroll::-webkit-scrollbar{
+    width: 6px;
+}
+
+.scroll::-webkit-scrollbar-thumb{
+    width: 6px;
+    height: 47.8px;
+	border-radius: 4px;
+	background-color: #053ED1;
 }
