@@ -3,49 +3,59 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Google Sign In</title>
-  <link rel="stylesheet" href="css/mainpage.css">
+  <title>Contacts Page</title>
+  <link rel="stylesheet" href="css/mainpage.css" />
 </head>
 
-<body>
-  <div class="container">
-    <div class="header-bar">
-        <span id="rectangle">
-            <!-- <div id="ellipse-50"></div> /!-->
-            <!-- <div id="ellipse-49"></div> /!-->
-        </span>
-        <div id="my-profile" class="profile">
-          <div id="my-profile-ellipse">
-          </div>
-          <img src="" id="my-profile-avatar">
-          <div id="my-profile-info">
-            <div id="my-profile-name">Alex Trust</div>
-            <div id="my-profile-email">alextrust@gmail.com</div>
-          </div>
-        </div>
-        <div class="logout">
-            <img src="assets/app/Logout.png" alt="Logout" onclick="logout()">
-        </div>
-    </div>
-    <div class="contacts-title-container">
-        <div id="contacts-title">Contacts</div>
-        <div id="contacts-count">()</div>
-    </div>
-    <div id="contact-scroller-container">
-      <div class="contact-header">
-        <div id="header-name" class="contact-header-item">NAME</div>
-        <div id="header-email" class="contact-header-item">EMAIL</div>
-        <div id="header-phone" class="contact-header-item">PHONE NUMBER</div>
-      </div>
-      <div id="contacts_list">
-      </div>
-      <div id="scroll-container">
-        <div id="scroller"></div>
-        <div id="scrollbar"></div>         
-      </div>
-    </div>
-  </div>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="js/contacts.js"></script>
-</body>
+<div id="contacts_app">
+  <div id="background"></div>
+  <div id="vector_1"></div>
+  <div id="vector_2"></div>
+  <div id="ellipse_51"></div>
+  <div id="ellipse_52"></div>
+  <div id="ellipse_53"></div>
+  <div id="ellipse_54"></div>
+  <div id="ellipse_55"></div>
+  <div id="ellipse_56"></div>
+  <div id="list"></div>
+  <div id="contact_list" class="scroll"></div>
+  <!--
+  <div id="group"></div>
+  <div id="bin-2-alternate"></div>
+  <div id="shape"></div>
+  <div id="shape_1"></div>
+  <div id="shape_2"></div>
+  <div id="shape_3"></div>
+  <div id="shape_4"></div>
+  <div id="layout-none"></div>
+  <div id="rectangle-path"></div>
+  <div id="selection_box"></div>
+  -->
+  <div id="name">NAME</div>
+  <div id="phone_number">PHONE NUMBER</div>
+  <div id="email">EMAIL</div>
+  <div id="contacts-count">()</div>
+  <div id="contacts">Contacts</div>
+  <div id="header_bar"></div>
+
+  <!--
+  <img id="cursor_hover" src="assets/app/Cursor_hover.png">
+  <div id="cursor-hand-1"></div>
+  <div id="shape_6"></div>
+  <div id="shape_7"></div>
+  <div id="shape_8"></div>
+  <div id="shape_9"></div>
+  -->
+  <div id="account_details"></div>
+  <div id="ellipse_47"></div>
+  <img id="my-profile-avatar" src="">
+  <div id="my-profile-name"></div>
+  <div id="my-profile-email"></div>
+  <img id="logout" src="assets/app/Logout.png" alt="Logout" onclick="logout()">
+</div>
+
+<body style="cursor: url('assets/app/Cursor_hover.png'), default"></body>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="js/contacts.js"></script>
 </html>

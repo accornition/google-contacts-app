@@ -1,34 +1,21 @@
-# google-contacts-app
+# Backend for the Google Contacts App
 
 ******************
 
-## Setup
+## Methodology
 
-* Create the environment and get credentials
+The architecture of the program is as follows:
 
-```bash
-cp .env.example .env
-```
+![Application Flow](img/Google Contacts App Flow.png)
 
-Add your Google API credentials, client ID, client secret, etc here.
+* The OAuth is done using Express.JS + Passport.JS on the server side, using a callback function on successful sign-in
+* The user can also select contacts and delete them if they wish to
 
-* Install all dependencies
+## Endpoints
 
-```bash
-cd server/
-npm install
-```
-
-* Start the backend server in prod mode
-
-```bash
-npm run start
-```
-
-In development mode, you can use `nodemon` to start the dev server (Install using `npm install nodemon`)
-
-```bash
-npm run dev
-```
+* `GET /contacts` &#8594; Fetches a single page of contacts. Here, the pagination size is set on the server side to be a constant (10 items / page)
+* `GET /contacts/all` &#8594; Fetches **all** contacts in a single API call
+* `GET /contacts/total` &#8594; Fetches the total number of contacts
+* `DELETE /contacts/:contactId` &#8594; Deletes a contact with the corresponding `contaectId` (`resourceName` in Google API terminology)
 
 *******************
