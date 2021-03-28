@@ -20,15 +20,15 @@ var contactDustbinTopOffset = 214;
 var contactSelectionBoxTopOffset = 214;
 
 
-$(window).on('scroll', scrollHandler);
+$('#contact_list').on('scroll', scrollHandler);
 
 function scrollHandler(event) {
-    let scroll = $(window).scrollTop();
-    let scrollBottom = scroll + $(window).height();
-    let difference = $(document).height() - scrollBottom;
-    console.log(difference);
-    const DELTA = 0.25; // We make another AJAX query if the scroll bar has only DELTA percent of the current window remaining to render
-    if (Math.abs((difference) / $(window).height()) <= DELTA) {
+    let totalHeight = $('#contact_list')[0].scrollHeight;
+    let totalOffset = $('#contact_list')[0].offsetHeight;
+    let scroll = $('#contact_list').scrollTop();
+    let difference = Math.abs(totalHeight - (scroll + totalOffset));
+    const DELTA = 0.2; // We make another AJAX query if the scroll bar has only DELTA percent of the current window remaining to render
+    if ((difference) / scroll <= DELTA) {
         // Make another API call
         var nextPageToken = localStorage.getItem("nextPageToken");
         if (nextPageToken == undefined || nextPageToken == null ||  nextPageToken === "") {
