@@ -208,6 +208,13 @@ async function deleteContact(event) {
             var resourceId = `${resourceName.replace(/\//g, "\\/")}`;
             recalculateContactPositions(resourceId);
             $(`#${resourceId}`).remove(); // We need to escape '/' with "\\/" since our ID contains a forward slash
+            var numContacts = $('#contacts-count').html();
+            numContacts = Number(numContacts.substr(1, numContacts.length - 2)) - 1;
+            if (numContacts && numContacts >= 0) {
+                $('#contacts-count').html(`(${numContacts})`);
+            } else {
+                $('#contacts-count').html(`(0)`);
+            }
         },
         error: function() {
             console.log("Error during Deleting Contact");
