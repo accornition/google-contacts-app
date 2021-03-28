@@ -8,12 +8,11 @@
 </head>
 
 <body>
+  <div id="box"></div>
+  <div class="signin-google">Sign in with Google</div>
+  <img class="google-image" src="assets/signin/image 12.png">
   <div class="container">
-    <h1>Google Login</h1>
-    <div id="box">
       <!--<span class="button-text">Sign Out</span>-->
-      <img class="google-image" src="assets/signin/image 12.png">
-      <span class="signin-google">Sign in with Google</span>
       <div class="form-container">
         <form html="{:multipart=>true}" data-remote="true" action="http://localhost:3000/auth/google" method="GET" accept-charset="UTF-8">
         <!--
@@ -29,7 +28,6 @@
           <!--<input class="btn btn-default btn-signin" type="button" value="Sign In" name="commit">/!-->
         </form>
       </div>
-    </div>
   </div>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://apis.google.com/js/platform.js" async defer></script>
