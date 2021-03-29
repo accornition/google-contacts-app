@@ -3,13 +3,11 @@ require('dotenv').config();
 const port = process.env.PORT;
 
 var createError = require('http-errors');
-const fs = require('fs');
 var express = require('express');
 var base64url = require('base64url');
 const {google} = require('googleapis');
 var path = require('path');
-var cookieParser = require('cookie-parser');
-var cookieSession = require('cookie-session');
+
 var logger = require('morgan');
 
 const passport = require("passport");
@@ -17,11 +15,7 @@ const GoogleStrategy = require("passport-google-oauth20").Strategy;
 
 const app = express();
 
-app.use(cookieSession({
-    name: 'session',
-    keys: ['123']
-}))
-app.use(cookieParser());
+
 app.use(passport.initialize());
 
 
@@ -109,12 +103,12 @@ app.get(
       state: base64url(JSON.stringify({hashSecret: process.env.HASH_SECRET})),
       accessType: 'offline',
       approvalPrompt: 'force',
-    }, {failureRedirect: "/error.html"}),
+    }, {failureRedirect: "/"}),
   );
   
 app.get(
     '/auth/google/callback',
-    passport.authenticate('google', {failureRedirect: '/error.html'}),
+    passport.authenticate('google', {failureRedirect: '/'}),
     (req, res) => {
         try {
             console.log(req.query);
@@ -126,7 +120,7 @@ app.get(
             hashSecret = stateJson.hashSecret;
             if (hashSecret !== process.env.HASH_SECRET) {
                 // TODO: Change this
-                res.status(400).redirect("/error.html");
+                res.status(400).redirect("/");
                 return;
             }
 
@@ -405,26 +399,6 @@ app.get('/home', redirectifNotloggedIn, (req, res) => {
     res.sendFile(path.join(__dirname, 'frontend', "/contacts.html"));
 });
 
-app.post('/login', (req, res, next) => {
-    try {
-        var body = req.body;
-        console.log(body);
-        var email = body['email'];
-        var password = body['password'];
-        var responseJson = {
-            "email": email,
-            "password": password
-        };
-    } catch {
-        res.status(400).json({
-            "error": true
-        });
-        return;
-    }
-    res.status(200).json(responseJson);
-  });
-
-
 app.get('/logout', (req, res) => {
     req.logout();
     req.session = null;
@@ -452,7 +426,7 @@ app.use(function(err, req, res, next) {
 
     // render the error page
     res.status(err.status || 500);
-    res.redirect("/error.html");
+    res.redirect("/");
 });
 
 app.listen(port, () => {
