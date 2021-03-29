@@ -56,9 +56,11 @@ passport.use(
         callbackURL: process.env.OAUTH_CALLBACK_DOMAIN + '/auth/google/callback'
       },
       (accessToken, refreshToken, profile, done) => {
+        /*
         console.log("access token: ", accessToken);
         console.log("refresh token: ", refreshToken);
         console.log("Profile: ", profile);
+        */
         
         // Create the user to supply to Passport.JS using the below options
         let userProfile = {
@@ -119,7 +121,7 @@ app.get(
             
             state = req.query.state;
             stateJson = JSON.parse(base64url.decode(state));
-            console.log(stateJson);
+            // console.log(stateJson);
             
             hashSecret = stateJson.hashSecret;
             if (hashSecret !== process.env.HASH_SECRET) {

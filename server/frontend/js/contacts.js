@@ -29,6 +29,13 @@ function incrementOffsets(shift) {
     contactSelectionBoxTopOffset += shift;
 }
 
+function resetSessionStorage() {
+    const keys = ["nextPageToken", "GOOGLE_CONTACTS_APP_SERVER_URL"];
+    keys.forEach((key) => {
+        localStorage.removeItem(key);
+    });
+}
+
 function throttle(func, interval) {
     var lastCall = 0;
     return function() {
@@ -164,6 +171,7 @@ async function logout() {
         type: "GET",
         url: server_url + "/logout",
         success: function(data) {
+            resetSessionStorage();
             console.log("Logged out!");
             window.location = server_url;
         },

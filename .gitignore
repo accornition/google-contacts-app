@@ -5,3 +5,6 @@ build/
 node_modules/
 old/
 google_token.json
+deploy/
+*.bundle.js
+main.bundle.js.LICENSE.txt

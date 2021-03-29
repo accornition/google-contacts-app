@@ -2,11 +2,13 @@
   "name": "contacts-app",
   "version": "1.0.0",
   "description": "Backend for the contacts app",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node app.js",
-    "dev": "npx nodemon app.js"
+    "dev": "webpack --mode development --config webpack.config.js",
+    "build": "webpack --mode production --config webpack.config.js",
+    "serve": "node main.bundle.js"
   },
   "author": "",
   "license": "ISC",
@@ -23,5 +25,9 @@
     "nodemon": "^2.0.7",
     "passport": "^0.4.1",
     "passport-google-oauth20": "^2.0.0"
+  },
+  "devDependencies": {
+    "webpack": "^5.28.0",
+    "webpack-cli": "^4.6.0"
   }
 }
