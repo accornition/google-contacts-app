@@ -1,0 +1,6 @@
+node_modules
+npm-debug.log
+old
+.catalyst
+.vscode
+main.bundle.js
