@@ -14,7 +14,7 @@
   <div class="container">
       <!--<span class="button-text">Sign Out</span>-->
       <div class="form-container">
-        <form html="{:multipart=>true}" data-remote="true" action="http://localhost:3000/auth/google" method="GET" accept-charset="UTF-8">
+        <form html="{:multipart=>true}" data-remote="true" id="GOOGLE_CONTACTS_APP_SERVER_URL" onsubmit="getFormAction(this);" method="GET" accept-charset="UTF-8">
         <!--
         <input id="email" class="form-control" type="text" placeholder="Email" name="email">
         <input id="password" class="form-control" type="password" placeholder="Password" name="password">
