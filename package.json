@@ -2,13 +2,13 @@
   "name": "contacts-app",
   "version": "1.0.0",
   "description": "Backend for the contacts app",
-  "main": "app.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node app.js",
     "dev": "webpack --mode development --config webpack.config.js",
     "build": "webpack --mode production --config webpack.config.js",
-    "serve": "node main.bundle.js"
+    "serve": "node deploy/main.bundle.js"
   },
   "author": "",
   "license": "ISC",

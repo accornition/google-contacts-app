@@ -6,8 +6,8 @@ WORKDIR /usr/src/app
 # Install app dependencies
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
 # where available (npm@5+)
-COPY server/package*.json ./
-COPY server/webpack.config.js ./
+COPY package*.json ./
+COPY webpack.config.js ./
 COPY build_server.sh ./
 
 COPY entrypoint.sh /
@@ -18,7 +18,7 @@ RUN /entrypoint.sh
 # RUN npm ci --only=production
 
 # Bundle app source
-COPY ./server .
+COPY . .
 
 RUN ./build_server.sh
 
