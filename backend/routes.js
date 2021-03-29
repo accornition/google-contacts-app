@@ -146,6 +146,9 @@ appRouter.get(
             });
             return;
         }
+        if (!numContacts || (numContacts === "undefined")) {
+            numContacts = 0;
+        }
         res.status(200).json({
             "data": numContacts
         });
