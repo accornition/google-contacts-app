@@ -17,14 +17,14 @@ Add your Google API credentials, client ID, client secret, etc here in `.env`, w
 * Install all dependencies
 
 ```bash
-cd server/
 npm install
 ```
 
-* Start the backend server in prod mode:
+* Start the server in prod mode:
 
 ```bash
-npm run start
+npm run build
+npm run serve
 ```
 
 In development mode, you can use:
