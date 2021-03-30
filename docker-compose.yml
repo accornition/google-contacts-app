@@ -1,0 +1,22 @@
+version: "3.8"
+
+services:
+  google-contacts-app:
+    build: "./"
+    env_file:
+      - ".env"
+    expose:
+      - "3000"
+    volumes:
+      - "./:/usr/src/app"
+
+  reverseproxy:
+    image: "nginx:1.19-alpine"
+    restart: "always"
+    ports:
+      - "80:80"
+    volumes:
+      - "./project/static:/srv"
+      - "./config/nginx.conf:/etc/nginx/conf.d/default.conf"
+    depends_on:
+      - "google-contacts-app"
