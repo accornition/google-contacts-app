@@ -48,7 +48,7 @@ function throttle(func, interval) {
 }
 
 
-$('#contact_list').on('scroll', throttle(scrollHandler, 2000)); // Fire only once every 2 seconds
+$('#contact_list').on('scroll', throttle(scrollHandler, 1400)); // Fire only once every 1.4 seconds
 
 var lastScrollTop = 0;
 
